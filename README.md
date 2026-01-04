@@ -15,26 +15,26 @@ Modern, sade ve Linux dostu bir satranç uygulaması. Python ve Pygame kullanıl
 Programı sisteminize entegre etmek için aşağıdaki adımları izleyin:
 
 ### 1. Depoyu Klonlayın
-\`\`\`bash
+```bash
 git clone https://github.com/ibotimew/Chess.git
 cd Chess
-\`\`\`
+```
 
 ### 2. Bağımlılıkları Yükleyin
-\`\`\`bash
+```bash
 pip install -r requirements.txt
-\`\`\`
+```
 
 ### 3. Sisteme Paket Olarak Kurun
 Programı terminalden \`chess\` komutuyla çalıştırmak için projenin ana dizinindeyken:
-\`\`\`bash
+```bash
 pip install -e .
-\`\`\`
+```
 
 ### 4. Başlatın
-\`\`\`bash
+```bash
 chess
-\`\`\`
+```
 
 ## ⚙️ Yapılandırma (Configuration)
 
