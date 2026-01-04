@@ -4,6 +4,7 @@ Main entry point - with notation scheme support
 """
 import sys
 import pygame
+import os
 import chess
 import json
 from pathlib import Path
@@ -12,6 +13,20 @@ from dataclasses import dataclass
 from enum import Enum
 import subprocess
 import time
+
+
+# Linux standartlarına göre config dizinini belirle
+CONFIG_DIR = Path.home() / ".config" / "chess-app"
+CONFIG_FILE = CONFIG_DIR / "config.json"
+
+# Eğer config klasörü yoksa oluştur ve varsayılanları yaz
+if not CONFIG_DIR.exists():
+    CONFIG_DIR.mkdir(parents=True)
+    default_config = {"theme": "dark", "board_size": 800} # Örnek ayarlar
+    with open(CONFIG_FILE, "w") as f:
+        json.dump(default_config, f)
+
+# Artık ayarları CONFIG_FILE üzerinden okuyabilirsin
 
 # Constants
 SQUARE_SIZE = 80
@@ -42,7 +57,7 @@ class Marker:
     square: Tuple[int, int]
 
 class Config:
-    def __init__(self, config_path: str = "config.json"):
+    def __init__(self, config_path: str = str(CONFIG_FILE)):
         self.config_path = config_path
         self.load()
     
