@@ -11,7 +11,7 @@ if ! command -v pacman &> /dev/null; then
 fi
 
 # 2️⃣ Zorunlu sistem paketleri
-echo "📦 Zorunlu sistem paketleri yükleniyor..."
+echo "📦 Zorunlu sistem paketleri yükleniyor / kontrol ediliyor..."
 
 sudo pacman -S --needed --noconfirm \
   python \
@@ -30,15 +30,9 @@ if ! command -v stockfish &> /dev/null; then
     yay -S --needed --noconfirm stockfish
   else
     echo "⚠️  Stockfish bulunamadı ve yay yüklü değil."
-    echo "   Lütfen manuel kur:"
-    echo "   sudo pacman -S --needed base-devel git"
-    echo "   git clone https://aur.archlinux.org/yay.git"
-    echo "   cd yay && makepkg -si"
-    echo ""
-    echo "   sonra:"
-    echo "   yay -S stockfish"
-    echo ""
     echo "   Oyun motorsuz çalışacaktır."
+    echo "   Manuel kurulum:"
+    echo "   yay -S stockfish"
   fi
 else
   echo "✅ Stockfish zaten kurulu."
@@ -48,16 +42,21 @@ fi
 echo "🔧 pipx PATH ayarlanıyor..."
 pipx ensurepath
 
-# 5️⃣ Eski chess binary temizle
+# 5️⃣ Eski chess binary kalıntısı temizle
 BIN="$HOME/.local/bin/chess"
 if [ -f "$BIN" ]; then
   echo "🧹 Eski chess binary siliniyor: $BIN"
   rm -f "$BIN"
 fi
 
-# 6️⃣ Uygulamayı pipx ile kur
-echo "🐍 Chess App pipx ile kuruluyor..."
-pipx install -e .
+# 6️⃣ pipx ile kur / güncelle (KRİTİK KISIM)
+echo "🐍 Chess App pipx ile kuruluyor / güncelleniyor..."
+
+if pipx list | grep -q chess-app; then
+  pipx reinstall chess-app
+else
+  pipx install -e .
+fi
 
 # 7️⃣ Shell cache temizle
 hash -r || true
@@ -66,9 +65,9 @@ hash -r || true
 echo ""
 if command -v chess &> /dev/null; then
   echo "✅ Kurulum başarılı!"
-  echo "▶️ Başlatmak için:"
+  echo "▶️ Oyunu başlatmak için:"
   echo "   chess"
 else
-  echo "⚠️ Kurulum tamamlandı ama 'chess' komutu bulunamadı."
+  echo "❌ HATA: 'chess' komutu bulunamadı."
   echo "Yeni bir terminal açıp tekrar deneyin."
 fi
