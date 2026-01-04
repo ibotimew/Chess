@@ -1,99 +1,228 @@
-# ♟️ Chess App: Profesyonel & Minimalist Satranç Platformu
+# ♟️ Offline Chess App (Lichess‑Benzeri, Stockfish Destekli)
 
-Python tabanlı bu uygulama, hem oyuncular hem de satranç programlama ile ilgilenen geliştiriciler için tasarlanmış, Linux felsefesini benimseyen bir platformdur. Bünyesinde barındırdığı **Stockfish** motoru desteği ile en üst düzey analiz imkanı sunar.
+Bu proje **tamamen offline** çalışan, **Python + Pygame** tabanlı, minimalist ve profesyonel bir satranç uygulamasıdır. Arayüz felsefesi olarak **Lichess** sade yapısını örnek alır: ekranda yalnızca **tahta ve taşlar** bulunur; buton, menü veya dikkat dağıtıcı UI öğeleri yoktur.
 
-## 📋 İçindekiler
-1. [Öne Çıkan Özellikler](#-öne-çıkan-özellikler)
-2. [Stockfish ve Yapay Zeka Analizi](#-stockfish-ve-yapay-zeka-analizi)
-3. [Özel Başlangıç Konumları (FEN)](#-özel-başlangıç-konumları-fen)
-4. [Klavye Kısayolları](#-klavye-kısayolları)
-5. [Kurulum ve Dağıtım](#-kurulum-ve-dağıtım)
-6. [Yapılandırma Rehberi (config.json)](#-yapılandırma-rehberi-configjson)
-7. [Kaldırma Talimatları](#-kaldırma-talimatları)
+Uygulama, hamle üretimi ve yapay zekâ rakip için **Stockfish** motorunu kullanır. Ayarların tamamı Linux standartlarına uygun şekilde **`~/.config/chess-app/config.json`** dosyasından yapılır.
 
 ---
 
-## ✨ Öne Çıkan Özellikler
+## 📌 Genel Özellikler
 
-* **Stockfish Entegrasyonu:** Dünyanın en güçlü satranç motoru ile analiz ve oyun desteği.
-* **FEN Şeması Desteği:** İstediğiniz herhangi bir pozisyondan oyuna başlama imkanı.
-* **Evrensel Notasyon:** Algebraic, ICCF, Descriptive ve Coordinate sistemleri.
-* **Linux Native:** Ayarlarınızı `~/.config/chess-app/` altında saklayan temiz yapı.
-
----
-
-## 🤖 Stockfish ve Yapay Zeka Analizi
-
-Uygulama, sisteminizde yüklü olan **Stockfish** motorunu otomatik olarak kullanabilir. Zorluk ve performans ayarlarını `~/.config/chess-app/config.json` dosyasından yönetebilirsiniz:
-
-* **`stockfish_path`**: Bilgisayarınızdaki Stockfish dosyasının yolu (Genellikle `/usr/bin/stockfish`).
-* **`stockfish_depth`**: Motorun ne kadar derin analiz yapacağını belirler (Zorluk seviyesi). 
-  * *Hızlı/Kolay:* 1-5
-  * *Orta:* 10-15
-  * *Profesyonel:* 20+
-* **`stockfish_time`**: Motorun hamle düşünmek için ayıracağı maksimum süre.
+- ✅ **Tamamen offline** çalışma
+- ♜ **Stockfish UCI motoru** entegrasyonu
+- 🎨 Lichess tarzı **tahta & taş temaları**
+- 📐 **Pencere yeniden boyutlandırma** (kare olmak zorunda değil)
+- 🖱️ **Sürükle‑bırak** ve **tıkla‑tıkla** hamle sistemi
+- 🔄 **Undo (geri alma)** – animasyonlu
+- 🔁 **Tahta çevirme / taraf değiştirme**
+- ✍️ **Ok çizme ve kare işaretleme** (analiz için)
+- 🔔 Hamle, yeme, şah, mat, rok vb. **ses efektleri**
+- 🧠 Çoklu **notasyon desteği** (Algebraic, ICCF, Coordinate, Descriptive, FEN)
+- ♟️ **FEN ile başlangıç pozisyonu** belirleme
 
 ---
 
-## 🧩 Özel Başlangıç Konumları (FEN)
+## 🤖 Kullanılan Satranç Motoru (Stockfish)
 
-Belirli bir satranç problemini çözmek veya ünlü bir maçın ortasından başlamak için `config.json` dosyasındaki `starting_fen` değerini değiştirmeniz yeterlidir.
+Uygulama herhangi bir gömülü motor içermez. Bunun yerine sisteminizde kurulu olan **Stockfish** motorunu **UCI protokolü** üzerinden çalıştırır.
 
-**Örnek (Sadece Şahlar ve Piyonlar):**
-`"starting_fen": "4k3/pppppppp/8/8/8/8/PPPPPPPP/4K3 w - - 0 1"`
+### Motorun Görevleri
+
+- Bilgisayara hamle oynatmak
+- Oyun sırasında pozisyon değerlendirmesi yapmak
+- Oyuncuya karşı rakip olmak
+
+### Motor Ayarları
+
+Aşağıdaki ayarlar `config.json` içinden kontrol edilir:
+
+| Ayar | Açıklama |
+|----|----|
+| `stockfish_path` | Stockfish ikili dosyasının yolu (`/usr/bin/stockfish`) |
+| `stockfish_depth` | Arama derinliği (zorluk seviyesi) |
+| `stockfish_time` | Hamle başına maksimum düşünme süresi (saniye) |
+
+**Zorluk önerisi:**
+- Kolay: `depth = 1–3`
+- Orta: `depth = 6–10`
+- Güçlü: `depth = 12+`
+
+---
+
+## ⚙️ Yapılandırma Sistemi (config.json)
+
+Uygulama ilk kez çalıştırıldığında otomatik olarak şu dizini oluşturur:
+
+```text
+~/.config/chess-app/
+```
+
+ve içine `config.json` dosyasını yazar.
+
+### Örnek config.json
+
+```json
+{
+  "animation_speed": 0.2,
+  "stockfish_path": "/usr/bin/stockfish",
+  "stockfish_depth": 1,
+  "stockfish_time": 0.001,
+
+  "board_theme": "brown",
+  "piece_theme": "cburnett",
+
+  "notation_scheme": "algebraic",
+  "starting_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+
+  "play_sounds": true
+}
+```
+
+---
+
+## ✍️ Desteklenen Notasyonlar
+
+| Notasyon | Açıklama | Örnek |
+|-------|-------|-------|
+| `algebraic` | Standart SAN | `Nf3`, `exd5` |
+| `coordinate` | Kare koordinatlı | `e2e4` |
+| `iccf` | Sayısal | `5254` |
+| `descriptive` | Eski İngiliz | `P-K4` |
+| `fen` | Hamle + FEN çıktısı | terminale FEN basar |
+
+Notasyon türü `notation_scheme` alanından seçilir.
+
+---
+
+## 🧩 Başlangıç Pozisyonu (FEN)
+
+Her oyun başlangıcında tahta şu ayara göre kurulur:
+
+```json
+"starting_fen": "..."
+```
+
+Bu sayede:
+- Satranç problemleri
+- Etütler
+- Orta oyun / final pozisyonları
+
+ile doğrudan başlayabilirsiniz.
+
+---
+
+## 🖱️ Fare Kontrolleri
+
+| Eylem | İşlev |
+|----|----|
+| Sol tık | Taş seç / hamle yap |
+| Sol tık + sürükle | Sürükle‑bırak hamle |
+| Sağ tık | Kare işaretleme |
+| Sağ tık + sürükle | Ok çizme |
 
 ---
 
 ## ⌨️ Klavye Kısayolları
 
-Oyun sırasında aşağıdaki kısayolları kullanarak deneyiminizi hızlandırabilirsiniz:
-
-| Tuş | İşlev |
-| :--- | :--- |
-| **R** | Tahtayı ve oyunu sıfırla (Reset). |
-| **U** | Yapılan son hamleyi geri al (Undo). |
-| **S** | Mevcut pozisyonu FEN formatında terminale yazdır. |
-| **Q** | Oyundan çık. |
-| **F** | Ekranı tam ekran (Fullscreen) moduna al. |
+| Kısayol | Açıklama |
+|------|------|
+| **Ctrl + Z** | Son iki hamleyi geri al (oyuncu + motor) |
+| **Ctrl + R** | Oyunu sıfırla |
+| **Ctrl + M** | Tahtayı çevir / taraf değiştir |
+| **Pencereyi kapat** | Çıkış |
 
 ---
 
-## 🛠️ Kurulum ve Dağıtım
+## 🛠️ Kurulum
 
-### 1. Kütüphaneleri Kurun
-\`\`\`bash
-pip install pygame python-chess
-\`\`\`
+### 1️⃣ Gereksinimler
 
-### 2. Sisteme Paket Olarak Tanımlayın
-Terminale \`chess\` yazınca çalışması için:
-\`\`\`bash
+- Python **3.10+**
+- Stockfish (`sudo pacman -S stockfish` veya `apt install stockfish`)
+
+### 2️⃣ Bağımlılıkları Kur
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3️⃣ Uygulamayı Kur (önerilen)
+
+```bash
 pip install -e .
-\`\`\`
+```
+
+Kurulumdan sonra terminalden:
+
+```bash
+chess
+```
+
+yazarak çalıştırabilirsiniz.
+
+Alternatif olarak:
+
+```bash
+python chess_app.py
+```
 
 ---
 
-## ⚙️ Yapılandırma Rehberi (config.json)
+## 🗑️ Kaldırma (Temiz Silme)
 
-Ayarlarınız `~/.config/chess-app/config.json` dosyasında şu şekilde görünür:
+### 1️⃣ Python paketini kaldır
 
-\`\`\`json
-{
-  "stockfish_depth": 15,
-  "board_theme": "brown",
-  "notation_scheme": "algebraic",
-  "starting_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-  "play_sounds": true
-}
-\`\`\`
+```bash
+pip uninstall chess-app
+```
+
+### 2️⃣ Ayar dosyalarını sil
+
+```bash
+rm -rf ~/.config/chess-app
+```
+
+### 3️⃣ Proje klasörünü sil
+
+```bash
+rm -rf chess-app/
+```
+
+---
+
+## 📁 Proje Yapısı
+
+```text
+chess-app/
+├── chess_app.py        # Ana uygulama
+├── setup.py            # Paketleme
+├── requirements.txt    # Bağımlılıklar
+├── assets/
+│   ├── pieces/
+│   ├── boards/
+│   └── sounds/
+└── README.md
+```
 
 ---
 
-## 🗑️ Kaldırma Talimatları
+## 🎯 Tasarım Felsefesi
 
-1. **Paketi Kaldır:** \`pip uninstall chess-app\`
-2. **Ayarları Sil:** \`rm -rf ~/.config/chess-app/\`
-3. **Klasörü Sil:** \`rm -rf MyChess/\`
+- Menü yok
+- Ayar ekranı yok
+- UI karmaşası yok
+- Sadece **satranç**
+
+Tüm kontrol **dosya + klavye + fare** üzerinden yapılır.
 
 ---
-**Geliştirici:** [ibotimew](https://github.com/ibotimew) | **Sürüm:** 1.0.0
+
+## 👤 Geliştirici
+
+**ibrahim**  
+Minimalist, offline, Linux‑uyumlu satranç uygulaması
+
+---
+
+♟️ *Gerçek satranç, dikkat dağıtmadan oynanır.*
+
