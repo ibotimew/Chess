@@ -173,3 +173,50 @@ Tüm kontrol **dosya + klavye + fare** üzerinden yapılır.
 Offline, sade, Linux‑uyumlu satranç uygulaması
 
 ♟️ *Gerçek satranç, dikkat dağıtmadan oynanır.*
+
+---
+
+## ⚠️ Stockfish Olmadan Çalışma
+
+Stockfish motoru sistemde kurulu değilse:
+
+* Uygulama açılır
+* Tahta ve hamleler çalışır
+* Yapay zekâ devre dışı kalır
+
+Motor daha sonra kurulup `config.json` içinden etkinleştirilebilir.
+
+---
+
+## 🧯 Sorun Giderme
+
+### `chess: command not found`
+
+* Yeni bir terminal açın
+* `~/.local/bin` dizininin PATH içinde olduğundan emin olun
+* Kurulumu tekrar çalıştırın:
+
+```bash
+./install.sh
+```
+
+### Oyun açılıyor ama motor oynamıyor
+
+* `stockfish` komutunun terminalde çalıştığını kontrol edin
+* `stockfish_path` ayarını doğrulayın
+
+---
+
+## 🎯 Kimler İçin?
+
+* Offline satranç oynamak isteyenler
+* Dikkat dağıtıcı arayüzlerden hoşlanmayanlar
+* Linux (özellikle Arch Linux) kullanıcıları
+* Satranç çalışması ve analiz yapanlar
+
+---
+
+## 📄 Lisans
+
+Bu proje kişisel kullanım ve öğrenme amaçlıdır.
+Kullanılan satranç taşları ve tahta görselleri Lichess’in kendi lisans koşullarına tabidir.
