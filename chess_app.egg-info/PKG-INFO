@@ -1,0 +1,6 @@
+Metadata-Version: 2.4
+Name: chess-app
+Version: 0.1.0
+Requires-Dist: pygame
+Requires-Dist: python-chess
+Dynamic: requires-dist

@@ -1,0 +1,9 @@
+README.md
+chess_app.py
+setup.py
+chess_app.egg-info/PKG-INFO
+chess_app.egg-info/SOURCES.txt
+chess_app.egg-info/dependency_links.txt
+chess_app.egg-info/entry_points.txt
+chess_app.egg-info/requires.txt
+chess_app.egg-info/top_level.txt
