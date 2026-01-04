@@ -8,4 +8,6 @@ venv/
 env/
 .env
 
-# Kullanıcıya özel ayarlar (İsteğe bağlı, config.json'u göndermek istiyorsan bunu sil)
+# Kullanıcıya özel ayarlar (İsteğe bağlı, config.json'u göndermek istiyorsan bunu sil)venv/
+__pycache__/
+*.pyc
