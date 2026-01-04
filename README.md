@@ -1,4 +1,3 @@
-cat << 'EOF' > README.md
 # ♟️ Chess App
 
 Modern, sade ve Linux dostu bir satranç uygulaması. Python ve Pygame kullanılarak geliştirilmiştir. Gereksiz hiçbir bağımlılık içermez ve terminal üzerinden doğrudan çalıştırılabilir.
