@@ -15,7 +15,7 @@ Python ve Pygame ile geliştirilmiş, hafif (lightweight), sade ve yüksek perfo
 Programın en büyük özelliği, sisteminize bir paket gibi kurulabilmesidir. Böylece terminalde herhangi bir dizindeyken sadece `chess` yazarak oyunu başlatabilirsiniz.
 
 ### 1. Bağımlılıkların Yüklenmesi
-```bash
+
 pip install pygame python-chess
 
 2. Sisteme Kurulum (Global Erişim)
