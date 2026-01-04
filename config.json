@@ -1,0 +1,41 @@
+{
+  "animation_speed": 0.2,
+  "stockfish_path": "/usr/bin/stockfish",
+  "stockfish_depth": 1,
+  "stockfish_time": 0.001,
+  "arrow_color": [
+    255,
+    0,
+    0
+  ],
+  "arrow_thickness": 15,
+  "circle_color": [
+    70,
+    115,
+    80
+  ],
+  "circle_thickness": 6,
+  "circle_radius_ratio": 0.15,
+  "marker_color": [
+    255,
+    0,
+    0
+  ],
+  "marker_thickness": 15,
+  "marker_radius_ratio": 0.9,
+  "last_move_from_color": [
+    205,
+    210,
+    106
+  ],
+  "last_move_to_color": [
+    170,
+    162,
+    58
+  ],
+  "board_theme": "brown",
+  "piece_theme": "cburnett",
+  "play_sounds": true,
+  "notation_scheme": "algebraic",
+  "starting_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+}

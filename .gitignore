@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Sanal Ortam (KESİNLİKLE GİTMEMELİ)
+venv/
+env/
+.env
+
+# Kullanıcıya özel ayarlar (İsteğe bağlı, config.json'u göndermek istiyorsan bunu sil)
