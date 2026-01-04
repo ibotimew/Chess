@@ -1,61 +1,63 @@
-# ♟️ Chess App - Python
+# ♟️ Chess App (Linux Optimized)
 
-Bu proje, Python ve Pygame kütüphanesi kullanılarak geliştirilmiş, görsel arayüze sahip bir satranç uygulamasıdır. Hem başlangıç düzeyindeki geliştiriciler için bir örnek teşkil eder hem de yerel olarak satranç oynamanıza olanak sağlar.
+Python ve Pygame ile geliştirilmiş, hafif (lightweight), sade ve yüksek performanslı bir satranç uygulamasıdır. Lichess estetiğinden ilham alınarak, modern geliştirme standartlarına ve Linux dosya hiyerarşisine tam uyumlu şekilde tasarlanmıştır.
 
-## 🚀 Özellikler
+## ✨ Öne Çıkan Özellikler
 
-* **Tam Satranç Kuralları:** Rok, geçerken alma (en passant) ve piyon terfisi dahil.
-* **Görsel Arayüz:** Pygame ile optimize edilmiş akıcı taş hareketleri.
-* **Konfigürasyon Desteği:** `config.json` üzerinden ayarlanabilir parametreler.
-* **Ses Efektleri:** Galibiyet ve hamle durumları için ses desteği.
-* **Hata Günlüğü:** `chess_error.log` ile çalışma anındaki hataların takibi.
+* **Kompakt ve Hızlı:** Gereksiz hiçbir kütüphane barındırmaz, sistem kaynaklarını tüketmez.
+* **Linux Native:** Konfigürasyon dosyalarını `~/.config/chess-app/` dizininde saklar, sisteminizi kirletmez.
+* **Esnek Notasyon:** Cebirsel (Algebraic), Tanımlayıcı (Descriptive), ICCF ve Koordinat notasyon sistemlerini destekler.
+* **Özelleştirilebilir:** Renkler, sesler, animasyon hızı ve taş temaları tek bir JSON dosyası üzerinden yönetilir.
+* **Gelişmiş Analiz Desteği:** Stockfish motoru ile entegrasyon altyapısına sahiptir.
 
-## 🛠️ Kurulum
+## 🛠️ Kurulum ve Terminal Entegrasyonu
 
-Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları takip edin:
+Programın en büyük özelliği, sisteminize bir paket gibi kurulabilmesidir. Böylece terminalde herhangi bir dizindeyken sadece `chess` yazarak oyunu başlatabilirsiniz.
 
-1.  **Depoyu Klonlayın:**
-    ```bash
-    git clone [https://github.com/ibotimew/Chess.git](https://github.com/ibotimew/Chess.git)
-    cd Chess
-    ```
+### 1. Bağımlılıkların Yüklenmesi
+```bash
+pip install pygame python-chess
 
-2.  **Bağımlılıkları Yükleyin:**
-    ```bash
-    pip install -r requirements.txt
-    ```
+2. Sisteme Kurulum (Global Erişim)
 
-3.  **Varlıkları (Assets) İndirin:**
-    Eğer taş görselleri ve sesler eksikse, yardımcı betiği çalıştırın:
-    ```bash
-    python download_assets.py
-    ```
+Proje klasörünün içindeyken aşağıdaki komutu çalıştırarak terminal kısayolunu oluşturun:
+Bash
 
-4.  **Oyunu Başlatın:**
-    ```bash
-    python chess_app.py
-    ```
+pip install -e .
 
-## 📁 Dosya Yapısı
+3. Çalıştırma
+Bash
 
-* `chess_app.py`: Oyunun ana döngüsü ve mantığının bulunduğu dosya.
-* `assets/`: Taş görselleri ve ses dosyalarının bulunduğu klasör.
-* `config.json`: Oyun ayarları (ekran boyutu, renkler vb.).
-* `requirements.txt`: Gerekli Python kütüphanelerinin listesi.
+chess
 
-## 📝 Gelecek Planları
+⚙️ Yapılandırma (Configuration)
 
-- [ ] Yapay zekaya karşı oynama modu (Stockfish entegrasyonu).
-- [ ] Online multiplayer desteği.
-- [ ] Hamle geçmişini geri alma (Undo) özelliği.
+Program, "Sade Tasarım, Esnek Ayar" felsefesini benimser. Tüm ayarlar Linux standartlarına uygun olarak aşağıdaki dizinde tutulur:
 
-## 🤝 Katkıda Bulunma
+~/.config/chess-app/config.json
+Önemli Parametreler:
+Parametre	Açıklama	Varsayılan
+board_theme	Tahtanın renk teması (brown, blue, wood vb.)	brown
+animation_speed	Taş hareket hızı (saniye cinsinden)	0.2
+notation_scheme	Hamle kayıt sistemi	algebraic
+play_sounds	Ses efektleri (Açık/Kapalı)	true
+🏗️ Proje Yapısı
+Plaintext
 
-1. Bu depoyu çatallayın (Fork).
-2. Yeni bir özellik dalı oluşturun (`git checkout -b ozellik/yeniOzellik`).
-3. Değişikliklerinizi commit edin (`git commit -m 'Yeni özellik eklendi'`).
-4. Dalınıza push yapın (`git push origin ozellik/yeniOzellik`).
-5. Bir Çekme İsteği (Pull Request) açın.
+├── chess_app.py      # Ana uygulama mantığı ve GUI döngüsü
+├── setup.py          # Terminal komutu (entry_point) tanımlaması
+├── config.json       # Varsayılan ayar şablonu
+├── requirements.txt  # Gerekli kütüphaneler listesi
+└── assets/           # Görsel ve ses varlıkları
 
----
-Geliştiren: [ibotimew](https://github.com/ibotimew)
+🗺️ Yol Haritası (Roadmap)
+
+    [ ] Stockfish Entegrasyonu: Tam kapasite yapay zeka analizi.
+
+    [ ] PGN Desteği: Oynanan maçları kaydedip tekrar izleme.
+
+    [ ] Online Mod: WebSocket üzerinden iki kişilik oyun desteği.
+
+Geliştirici: ibotimew
+
+Bu proje açık kaynak topluluğu için geliştirilmiştir.
