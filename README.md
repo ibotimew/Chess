@@ -1,207 +1,175 @@
-# ♟️ Offline Chess Application (Lichess‑benzeri)
+# ♟️ Offline Chess App (Lichess‑Benzeri, Stockfish Destekli)
 
-Bu proje, **tamamen offline çalışan**, sade arayüzlü ve **Lichess deneyimini temel alan** bir satranç uygulamasıdır. Python ile geliştirilmiştir ve herhangi bir internet bağlantısına ihtiyaç duymaz.
+Bu proje **tamamen offline** çalışan, **Python + Pygame** tabanlı, sade ve performans odaklı bir satranç uygulamasıdır. Arayüz felsefesi olarak **Lichess**’in minimal yaklaşımını benimser: ekranda yalnızca **tahta ve taşlar** bulunur, menü veya buton yoktur.
 
-Uygulama; **python‑chess** kütüphanesi, **Stockfish satranç motoru** ve **pygame** tabanlı bir grafik arayüz kullanır. Amaç; minimum buton, maksimum odak prensibiyle yalnızca satranç oynamaktır.
-
----
-
-## 📌 Temel Özellikler
-
-- 📴 %100 **offline** çalışır
-- ♞ **Stockfish** motoru ile oynama
-- 🎨 **Lichess taş ve tahta temaları**
-- ⚙️ Tüm ayarlar **config dosyası** üzerinden yapılır
-- 🖥️ Minimal arayüz (buton, menü, reklam yok)
-- ♻️ Geri alma / yeniden yapma (undo / redo)
-- 💾 Oyun kaydetme & yükleme (PGN)
-- 🧠 Farklı zorluk seviyeleri
+Uygulama hamle üretimi ve rakip için **Stockfish (UCI)** motorunu kullanır. Tüm ayarlar Linux standartlarına uygun şekilde **`~/.config/chess-app/config.json`** dosyasından yapılır.
 
 ---
 
-## 🧠 Kullanılan Satranç Motoru
+## ✨ Özellikler
 
-Uygulama, **Stockfish** satranç motorunu kullanır.
-
-### Neden Stockfish?
-- Açık kaynak
-- Dünyanın en güçlü satranç motorlarından biri
-- Offline çalışabilir
-- python‑chess ile doğrudan entegre edilebilir
-
-Motor, `python-chess` üzerinden **UCI protokolü** ile çalıştırılır.
-
-> ⚠️ Not: Stockfish ikili dosyası (binary) sisteminizde yüklü olmalıdır.
+* 📴 **%100 offline** çalışma
+* ♜ **Stockfish** motoru ile oynama
+* 🎨 Lichess tarzı **tahta & taş temaları**
+* 🖱️ **Sürükle‑bırak** ve **tıkla‑tıkla** hamle sistemi
+* 🔄 **Undo** (animasyonlu, oyuncu + motor)
+* 🔁 **Tahta çevirme / taraf değiştirme**
+* ✍️ **Ok çizme & kare işaretleme** (analiz için)
+* 🔔 Hamle, yeme, şah, mat vb. **ses efektleri**
+* ✍️ **Çoklu notasyon** (Algebraic, ICCF, Coordinate, Descriptive, FEN)
+* 🧩 **FEN** ile başlangıç pozisyonu
 
 ---
 
-## ⚙️ Ayarlar (Config Sistemi)
+## 🤖 Satranç Motoru (Stockfish)
 
-Uygulamadaki **tüm ayarlar** tek bir dosyadan yönetilir.
+Uygulama gömülü motor içermez. Sisteminizde kurulu olan **Stockfish** motorunu **UCI protokolü** ile çalıştırır.
 
-### 📁 Config Dosyasının Konumu
+### İlgili Ayarlar (`config.json`)
+
+| Ayar              | Açıklama                                               |
+| ----------------- | ------------------------------------------------------ |
+| `stockfish_path`  | Stockfish ikili dosya yolu (örn. `/usr/bin/stockfish`) |
+| `stockfish_depth` | Arama derinliği (zorluk)                               |
+| `stockfish_time`  | Hamle başına maksimum süre (sn)                        |
+
+**Zorluk önerisi:** Kolay `1–3`, Orta `6–10`, Güçlü `12+`
+
+---
+
+## ⚙️ Yapılandırma (config.json)
+
+Uygulama ilk çalıştırmada otomatik olarak aşağıdaki dizini oluşturur:
 
 ```text
-~/.config/chess-app/config.json
+~/.config/chess-app/
 ```
 
-(İlk çalıştırmada otomatik oluşturulur)
-
----
-
-### 🧩 Yapılabilen Ayarlar
+### Örnek `config.json`
 
 ```json
 {
-  "engine_path": "/usr/bin/stockfish",
-  "engine_skill": 10,
-  "engine_depth": 15,
-  "board_theme": "lichess_default",
-  "piece_theme": "lichess_default",
-  "fullscreen": false,
-  "sound": true,
-  "autosave": true
+  "animation_speed": 0.2,
+  "stockfish_path": "/usr/bin/stockfish",
+  "stockfish_depth": 1,
+  "stockfish_time": 0.001,
+  "board_theme": "brown",
+  "piece_theme": "cburnett",
+  "notation_scheme": "algebraic",
+  "starting_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+  "play_sounds": true
 }
 ```
 
-#### Açıklamalar
+---
 
-| Ayar | Açıklama |
-|----|----|
-| `engine_path` | Stockfish binary yolu |
-| `engine_skill` | Zorluk seviyesi (0‑20) |
-| `engine_depth` | Hesaplama derinliği |
-| `board_theme` | Tahta teması |
-| `piece_theme` | Taş teması |
-| `fullscreen` | Tam ekran modu |
-| `sound` | Sesler açık / kapalı |
-| `autosave` | Otomatik PGN kaydı |
+## ✍️ Notasyon Desteği
+
+| Tür           | Açıklama     | Örnek               |
+| ------------- | ------------ | ------------------- |
+| `algebraic`   | Standart SAN | `Nf3`, `exd5`       |
+| `coordinate`  | Koordinat    | `e2e4`              |
+| `iccf`        | Sayısal      | `5254`              |
+| `descriptive` | Klasik       | `P-K4`              |
+| `fen`         | Hamle + FEN  | Terminale FEN basar |
 
 ---
 
-## 🎮 Kontroller
+## 🧩 Başlangıç Pozisyonu (FEN)
 
-| Tuş | İşlev |
-|---|---|
-| Mouse | Taş sürükleme |
-| `Z` | Geri al (Undo) |
-| `Y` | İleri al (Redo) |
-| `S` | Oyunu kaydet |
-| `L` | Oyun yükle |
-| `ESC` | Çıkış |
+Her oyun `starting_fen` değerine göre başlar. Etütler, problemler ve orta‑oyun/final çalışmaları için idealdir.
 
 ---
 
-## 🛠️ Kurulum
+## 🖱️ Fare Kontrolleri
 
-### 1️⃣ Gerekli Paketler
+| Eylem             | İşlev           |
+| ----------------- | --------------- |
+| Sol tık           | Taş seç / hamle |
+| Sol tık + sürükle | Sürükle‑bırak   |
+| Sağ tık           | Kare işaretleme |
+| Sağ tık + sürükle | Ok çizme        |
+
+---
+
+## ⌨️ Klavye Kısayolları
+
+| Kısayol             | Açıklama                       |
+| ------------------- | ------------------------------ |
+| **Ctrl + Z**        | Son iki hamleyi geri al        |
+| **Ctrl + R**        | Oyunu sıfırla                  |
+| **Ctrl + M**        | Tahtayı çevir / taraf değiştir |
+| **Pencereyi kapat** | Çıkış                          |
+
+---
+
+## 🛠️ Kurulum (Arch Linux – Önerilen)
+
+> Arch Linux’ta **PEP 668** nedeniyle global `pip` yasaklıdır. Bu proje **pipx** ile güvenli şekilde kurulur.
+
+### Tek Komutla Kurulum
 
 ```bash
-sudo pacman -S python python-pip stockfish
+git clone https://github.com/ibotimew/chess.git
+cd chess
+chmod +x install.sh
+./install.sh
 ```
 
-(Dağıtımınıza göre uyarlayabilirsiniz)
-
----
-
-### 2️⃣ Projeyi Klonla
-
-```bash
-git clone https://github.com/yourname/chess-app.git
-cd chess-app
-```
-
----
-
-### 3️⃣ Python Bağımlılıkları
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-### 4️⃣ Çalıştırma
-
-```bash
-python chess_app.py
-```
-
-veya
+Kurulumdan sonra:
 
 ```bash
 chess
 ```
 
----
-
-## 🗑️ Kaldırma (Silme)
-
-### 1️⃣ Python Paketi
-
-```bash
-pip uninstall chess-app
-```
-
-### 2️⃣ Ayar Dosyaları
-
-```bash
-rm -rf ~/.config/chess-app
-```
-
-### 3️⃣ Kaydedilmiş Oyunlar
-
-```bash
-rm -rf ~/Documents/chess-games
-```
+> Not: Sisteminizde `chess` komut adı çakışıyorsa, `setup.py` içindeki komut adı `offline-chess` olarak değiştirilebilir.
 
 ---
 
-## 📂 Proje Yapısı
+## 🗑️ Kaldırma
+
+```bash
+cd chess
+chmod +x uninstall.sh
+./uninstall.sh
+```
+
+Ayarlar da dahil olmak üzere temiz silme yapar.
+
+---
+
+## 📁 Proje Yapısı
 
 ```text
 chess-app/
-│── chess_app.py        # Ana uygulama
-│── requirements.txt    # Python bağımlılıkları
-│── setup.py            # Paketleme dosyası
-│── assets/
-│   ├── pieces/         # Lichess taşları
-│   ├── boards/         # Tahta temaları
-│   └── sounds/         # Ses dosyaları
-│── README.md
+├── chess_app.py        # Ana uygulama
+├── setup.py            # Paketleme / console script
+├── requirements.txt    # Python bağımlılıkları
+├── install.sh          # Arch Linux kurulum scripti
+├── uninstall.sh        # Kaldırma scripti
+├── assets/
+│   ├── pieces/
+│   ├── boards/
+│   └── sounds/
+└── README.md
 ```
 
 ---
 
-## 🧪 Test Edilen Sistemler
+## 🎯 Tasarım Felsefesi
 
-- Arch Linux + Hyprland
-- Python 3.11+
-- Stockfish 16+
+* Menü yok
+* Ayar ekranı yok
+* Dikkat dağıtıcı UI yok
+* Sadece **satranç**
 
----
-
-## 📜 Lisans
-
-Bu proje **kişisel ve eğitim amaçlıdır**.
-
-- Stockfish → GPL
-- Lichess assetleri → Lichess lisansı
-
-Ticari kullanım için ilgili lisansları inceleyiniz.
+Tüm kontrol **dosya + klavye + fare** üzerinden yapılır.
 
 ---
 
-## ✨ Amaç
+## 👤 Geliştirici
 
-Bu proje;
-- sade satranç deneyimi
-- offline kullanım
-- öğrenme ve geliştirme
+**ibrahim**
+Offline, sade, Linux‑uyumlu satranç uygulaması
 
-amacıyla hazırlanmıştır.
-
----
-
-♟️ **İyi oyunlar!**
-
+♟️ *Gerçek satranç, dikkat dağıtmadan oynanır.*
