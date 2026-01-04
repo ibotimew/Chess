@@ -53,6 +53,4 @@ Tüm ayarlar \`~/.config/chess-app/config.json\` dosyasında yer alır. Bazı ö
 * \`config.json\`: Varsayılan yapılandırma ayarları.
 * \`assets/\`: Görseller ve ses dosyaları.
 
----
 **Geliştirici:** [ibotimew](https://github.com/ibotimew)
-EOF
