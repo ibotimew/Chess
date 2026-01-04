@@ -11,7 +11,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-        "offline-chess=chess_app:main",
-    ],
+            "chess=chess_app:main",
+        ],
     },
 )
