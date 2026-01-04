@@ -4,6 +4,11 @@ set -e
 
 echo "♟️ Chess App kurulumu başlıyor..."
 
+# uninstall.sh çalıştırılabilir olsun (varsa)
+if [ -f uninstall.sh ]; then
+  chmod +x uninstall.sh
+fi
+
 # 1️⃣ Arch kontrolü
 if ! command -v pacman &> /dev/null; then
   echo "❌ Bu script yalnızca Arch Linux içindir."
@@ -49,7 +54,7 @@ if [ -f "$BIN" ]; then
   rm -f "$BIN"
 fi
 
-# 6️⃣ pipx ile kur / güncelle (KRİTİK KISIM)
+# 6️⃣ pipx ile kur / güncelle
 echo "🐍 Chess App pipx ile kuruluyor / güncelleniyor..."
 
 if pipx list | grep -q chess-app; then
