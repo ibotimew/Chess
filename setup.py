@@ -1,9 +1,10 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name="chess-app",
     version="0.1.0",
     py_modules=["chess_app"],
+    python_requires=">=3.9",
     install_requires=[
         "pygame",
         "python-chess",
