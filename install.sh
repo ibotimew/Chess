@@ -2,7 +2,7 @@
 
 set -e
 
-echo "♟️ Offline Chess App kurulumu başlıyor..."
+echo "♟️ Chess App kurulumu başlıyor..."
 
 # 1️⃣ Arch Linux kontrolü
 if ! command -v pacman &> /dev/null; then
@@ -11,7 +11,7 @@ if ! command -v pacman &> /dev/null; then
 fi
 
 # 2️⃣ Gerekli sistem paketleri
-echo "📦 Sistem paketleri kontrol ediliyor..."
+echo "📦 Sistem paketleri yükleniyor / kontrol ediliyor..."
 
 sudo pacman -S --needed --noconfirm \
   python \
@@ -22,21 +22,32 @@ sudo pacman -S --needed --noconfirm \
   sdl2_mixer \
   sdl2_ttf
 
-# 3️⃣ pipx PATH
+# 3️⃣ pipx PATH ayarla
 echo "🔧 pipx PATH ayarlanıyor..."
 pipx ensurepath
 
-# 4️⃣ pipx ile uygulamayı kur
+# 4️⃣ Eski chess binary kalıntısı varsa temizle
+BIN="$HOME/.local/bin/chess"
+if [ -f "$BIN" ]; then
+  echo "🧹 Eski chess binary temizleniyor: $BIN"
+  rm -f "$BIN"
+fi
+
+# 5️⃣ pipx ile uygulamayı kur
 echo "🐍 Chess App pipx ile kuruluyor..."
 pipx install -e .
 
-# 5️⃣ Komut kontrolü
+# 6️⃣ Shell cache temizle
+hash -r || true
+
+# 7️⃣ Komut kontrolü
 if command -v chess &> /dev/null; then
-  echo "✅ Kurulum tamamlandı!"
   echo ""
-  echo "▶️ Çalıştırmak için:"
+  echo "✅ Kurulum başarılı!"
+  echo "▶️ Oyunu başlatmak için:"
   echo "   chess"
 else
+  echo ""
   echo "⚠️ Kurulum yapıldı ama 'chess' komutu bulunamadı."
   echo "Yeni bir terminal açıp tekrar deneyin."
 fi
